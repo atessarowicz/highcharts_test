@@ -1,0 +1,387 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+
+
+
+<%test_array = []%>
+<%total_net_array = []%>
+<%ib_net_array = []%>
+<%fidelity_net_array = []%>
+<%gross_array = []%>
+<%ib_gross_array = []%>
+<%fidelity_gross_array = []%>
+<%total_leverage_array = []%>
+<%ib_leverage_array = []%>
+<%fidelity_leverage_array = []%>
+<%stocks_array = []%>
+<%bonds_array = []%>
+<%stuff_array = []%>
+<%position_array = []%>
+
+
+
+
+
+
+
+<% @thing_data.each do |net| %>
+ <% test_array.push([Time.parse(net.date.to_s).utc.to_i*1000, net.total_net/1000]) %>
+ <% total_net_array.push([Time.parse(net.date.to_s).utc.to_i*1000, net.total_net/1000]) %>
+ <% ib_net_array.push([Time.parse(net.date.to_s).utc.to_i*1000, net.IB_net/1000]) %>
+ <% fidelity_net_array.push([Time.parse(net.date.to_s).utc.to_i*1000, net.Fidelity_net/1000]) %>
+ <% gross_array.push([Time.parse(net.date.to_s).utc.to_i*1000, net.gross/1000]) %>
+ <% ib_gross_array.push([Time.parse(net.date.to_s).utc.to_i*1000, net.IB_gross/1000]) %>
+ <% fidelity_gross_array.push([Time.parse(net.date.to_s).utc.to_i*1000, net.Fidelity_gross/1000]) %>
+ <% total_leverage_array.push([Time.parse(net.date.to_s).utc.to_i*1000, net.total_leverage]) %>
+ <% ib_leverage_array.push([Time.parse(net.date.to_s).utc.to_i*1000, net.IB_leverage]) %>
+ <% fidelity_leverage_array.push([Time.parse(net.date.to_s).utc.to_i*1000, net.Fidelity_leverage]) %>
+ <% stocks_array.push([Time.parse(net.date.to_s).utc.to_i*1000, net.stocks]) %>
+ <% bonds_array.push([Time.parse(net.date.to_s).utc.to_i*1000, net.bonds]) %>
+ <% stuff_array.push([Time.parse(net.date.to_s).utc.to_i*1000, net.stuff]) %>
+ <% end %>
+
+ <% @position_data.each do |position| %>
+ <% position_array.push([position.symbol, position.value]) %>
+ <% end %>
+ <% position_array3 = position_array.sort { |a,b| b[1] <=> a[1]} %>
+ <% position_array2 = position_array3.to_json.html_safe %>
+ 
+
+<%stocks = @thing_data.last.stocks%>
+<%bonds = @thing_data.last.bonds%>
+<%stuff = @thing_data.last.stuff%>
+
+<%ib_stocks = @thing_data.last.IB_stocks%>
+<%ib_bonds = @thing_data.last.IB_bonds%>
+<%ib_stuff = @thing_data.last.IB_stuff%>
+
+<%fidelity_stocks = @thing_data.last.Fidelity_stocks%>
+<%fidelity_bonds = @thing_data.last.Fidelity_bonds%>
+<%fidelity_stuff = @thing_data.last.Fidelity_stuff%>
+
+
+ 
+<div id="tests" style="width:50%; height:400px; float:left;"></div>
+
+<div id="nets" style="width:50%; height:400px; float:left;"></div>
+<div id="gross" style="width:50%; height:400px; float:left;"></div>
+<div id="leverage" style="width:50%; height:400px; float:left;"></div>
+<div id="sbs_area" style="width:50%; height:400px; float:left;"></div>
+<div id="positions" style="width:50%; height:400px; float:left;"></div>
+<div id="sbs" style="width:50%; height:400px; float:left;"></div>
+<div id="ib_sbs" style="width:50%; height:400px; float:left;"></div>
+<div id="fidelity_sbs" style="width:50%; height:400px; float:left;"></div>
+
+
+
+<script>
+$(function () { 
+	$('#tests').highcharts({
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'tests'
+        },
+
+        xAxis: {
+            type: "datetime"
+            },
+        
+        yAxis: {
+            title: {
+                text: '$'
+            }
+        },
+        series: [{
+        	
+            name: 'Fidelity Net',
+            data: <%=test_array%>
+        }
+        ]
+    });
+    $('#nets').highcharts({
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'Nets'
+        },
+
+        xAxis: {
+            type: "datetime"
+            },
+        
+        yAxis: {
+            title: {
+                text: '$'
+            }
+        },
+        series: [{
+        
+            name: 'Net',
+            data: <%=total_net_array%>
+        },
+        {
+        	
+            name: 'IB Net',
+            data: <%=ib_net_array%>
+        },
+        {
+        	
+            name: 'Fidelity Net',
+            data: <%=fidelity_net_array%>
+        }
+        ]
+    });
+    $('#gross').highcharts({
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'Gross'
+        },
+
+         xAxis: {
+            type: "datetime"
+            },
+        
+        yAxis: {
+            title: {
+                text: '$'
+            }
+        },
+        series: [{
+        	
+            name: 'Gross',
+            data: <%=gross_array%>
+        },
+        {
+        	
+            name: 'IB Gross',
+            data: <%=ib_gross_array%>
+        },
+        {
+        	
+            name: 'Fidelity Gross',
+            data: <%=fidelity_gross_array%>
+        }
+        ]
+    });
+    $('#leverage').highcharts({
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'Leverage'
+        },
+         xAxis: {
+            type: "datetime"
+            },
+        
+        yAxis: {
+            title: {
+                text: 'times'
+            }
+        },
+        series: [{
+        	
+            name: 'Leverage',
+            data: <%=total_leverage_array%>
+        },
+        {
+        	
+            name: 'IB Leverage',
+            data: <%=ib_leverage_array%>
+        },
+        {
+        	
+            name: 'Fidelity Leverage',
+            data: <%=fidelity_leverage_array%>
+        }
+        ]
+    });
+
+
+    $('#sbs_area').highcharts({
+        chart: {
+            type: 'area'
+        },
+        title: {
+            text: 'SBS'
+        },
+         xAxis: {
+            type: "datetime"
+        },
+        
+        yAxis: {
+            title: {
+                text: 'percent'
+            }
+        },
+        plotOptions: {
+                area: {
+                    stacking: 'percent',
+                    lineColor: '#ffffff',
+                    lineWidth: 1,
+                    marker: {
+                        lineWidth: 1,
+                        lineColor: '#ffffff'
+                    }
+                }
+            },
+        series: [{
+        	
+            name: 'Stocks',
+            data: <%=stocks_array%>
+        },
+        {
+        	
+            name: 'Bonds',
+            data: <%=bonds_array%>
+        },
+        {
+        	
+            name: 'Stuff',
+            data: <%=stuff_array%>
+        }
+        ]
+    });
+    $('#sbs').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        title: {
+            text: 'SBS'
+        },
+        tooltip: {
+    	    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    color: '#000000',
+                    connectorColor: '#000000',
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: 'allocation',
+            data: [
+                ['Stocks',   <%=stocks%>],
+                ['Bonds',       <%=bonds%>],
+                ['Stuff',    <%=stuff%>]    
+            ]
+        }]
+    });
+    $('#ib_sbs').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        title: {
+            text: 'IB SBS'
+        },
+        tooltip: {
+    	    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    color: '#000000',
+                    connectorColor: '#000000',
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: 'allocation',
+            data: [
+                ['Stocks',   <%=ib_stocks%>],
+                ['Bonds',       <%=ib_bonds%>],
+                ['Stuff',    <%=ib_stuff%>]    
+            ]
+        }]
+    });
+    $('#fidelity_sbs').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        title: {
+            text: 'Fidelity SBS'
+        },
+        tooltip: {
+    	    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    color: '#000000',
+                    connectorColor: '#000000',
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: 'allocation',
+            data: [
+                ['Stocks',   <%=fidelity_stocks%>],
+                ['Bonds',       <%=fidelity_bonds%>],
+                ['Stuff',    <%=fidelity_stuff%>]    
+            ]
+        }]
+    });
+    $('#positions').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        title: {
+            text: 'Positions'
+        },
+        tooltip: {
+    	    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    color: '#000000',
+                    connectorColor: '#000000',
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: 'positions',
+            data: <%=position_array2%>
+           
+        }]
+    });
+
+});
+</script>
+
+

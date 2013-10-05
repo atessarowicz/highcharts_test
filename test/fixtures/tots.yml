@@ -1,0 +1,49 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  date: 2013-09-15
+  total_net: 1.5
+  IB_net: 1.5
+  Fidelity_net: 1.5
+  total_margin: 1.5
+  IB_margin: 1.5
+  Fidelity_margin: 1.5
+  gross: 1.5
+  IB_gross: 1.5
+  Fidelity_gross: 1.5
+  stocks: 1.5
+  IB_stocks: 1.5
+  Fidelity_stocks: 1.5
+  bonds: 1.5
+  IB_bonds: 1.5
+  Fidelity_bonds: 1.5
+  stuff: 1.5
+  IB_stuff: 1.5
+  Fidelity_stuff: 1.5
+  total_leverage: 1.5
+  IB_leverage: 1.5
+  Fidelity_leverage: 1.5
+
+two:
+  date: 2013-09-15
+  total_net: 1.5
+  IB_net: 1.5
+  Fidelity_net: 1.5
+  total_margin: 1.5
+  IB_margin: 1.5
+  Fidelity_margin: 1.5
+  gross: 1.5
+  IB_gross: 1.5
+  Fidelity_gross: 1.5
+  stocks: 1.5
+  IB_stocks: 1.5
+  Fidelity_stocks: 1.5
+  bonds: 1.5
+  IB_bonds: 1.5
+  Fidelity_bonds: 1.5
+  stuff: 1.5
+  IB_stuff: 1.5
+  Fidelity_stuff: 1.5
+  total_leverage: 1.5
+  IB_leverage: 1.5
+  Fidelity_leverage: 1.5
